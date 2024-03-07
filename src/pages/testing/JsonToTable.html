@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script type="text/javascript">
+    var json3 = {
+      "count": 2,
+      "items": [{
+          "title": "Apple iPhone 4S Sale Cancelled in Beijing Amid Chaos (Design You Trust)",
+          "description": "Advertise here with BSA Apple cancelled its scheduled sale of iPhone 4S in one of its stores in China’s capital Beijing on January 13. Crowds outside the store in the Sanlitun district were waiting on queues overnight. There were incidents of scuffle between shoppers and the store’s security staff when shoppers, hundreds of them, were told that the sales [...]Source : Design You TrustExplore : iPhone, iPhone 4, Phone",
+          "link": "http://wik.io/info/US/309201303",
+          "timestamp": 1326439500,
+          "image": null,
+          "embed": null,
+          "language": null,
+          "user": null,
+          "user_image": null,
+          "user_link": null,
+          "user_id": null,
+          "geo": null,
+          "source": "wikio",
+          "favicon": "http://wikio.com/favicon.ico",
+          "type": "blogs",
+          "domain": "wik.io",
+          "id": "2388575404943858468"
+        },
+        {
+          "title": "Apple to halt sales of iPhone 4S in China (Fame Dubai Blog)",
+          "description": "SHANGHAI – Apple Inc said on Friday it will stop selling its latest iPhone in its retail stores in Beijing and Shanghai to ensure the safety of its customers and employees. Go to SourceSource : Fame Dubai BlogExplore : iPhone, iPhone 4, Phone",
+          "link": "http://wik.io/info/US/309198933",
+          "timestamp": 1326439320,
+          "image": null,
+          "embed": null,
+          "language": null,
+          "user": null,
+          "user_image": null,
+          "user_link": null,
+          "user_id": null,
+          "geo": null,
+          "source": "wikio",
+          "favicon": "http://wikio.com/favicon.ico",
+          "type": "blogs",
+          "domain": "wik.io",
+          "id": "16209851193593872066"
+        }
+      ]
+    }
+
+    printToConsoleLog(json3);
+
+    printAsHtmlTable(json3);
+
+    tableCreate();
+
+    document.body.appendChild(tableCreateWithJsonFlat(json3));
+
+
+    function printAsHtmlTable(json3){
+        var json = json3.items
+        var fields = Object.keys(json[0])
+        var replacer = function(key, value) { return value === null ? '' : value } 
+        
+        
+        
+        var csv = json.map(function(row){
+            return fields.map(function(fieldName){
+                return JSON.stringify(row[fieldName], replacer)
+        }).join(',')
+        })
+        
+        csv.unshift(fields.join(',')) // add header column
+        csv.forEach(value=>{
+            console.log(value);
+            })
+        csv = csv.join('\r\n');
+        console.log(csv)        
+    }
+
+    function printToConsoleLog(json3){
+        var json = json3.items
+        var fields = Object.keys(json[0])
+        var replacer = function(key, value) { return value === null ? '' : value } 
+        var csv = json.map(function(row){
+            return fields.map(function(fieldName){
+                    return JSON.stringify(row[fieldName], replacer)
+                }).join(',')
+        })
+        csv.unshift(fields.join(',')) // add header column
+        csv.forEach(value=>{
+            console.log(value);
+            })
+        csv = csv.join('\r\n');
+        console.log(csv)        
+    }
+
+    function tableCreate() {
+        
+        let tbl = document.createElement('table');
+        tbl.style.width = '100px';
+        tbl.style.border = '1px solid black';
+
+        for (let i = 0; i < 3; i++) {
+            const tr = tbl.insertRow();
+            for (let j = 0; j < 2; j++) {
+                if (i === 2 && j === 1) {
+                    break;
+                } else {
+                    const td = tr.insertCell();
+                    td.appendChild(document.createTextNode(`Cell I${i}/J${j}`));
+                    td.style.border = '1px solid black';
+                    if (i === 1 && j === 1) {
+                        td.setAttribute('rowSpan', '2');
+                    }
+                }
+            }
+        }
+
+        document.body.appendChild(tbl);
+    }
+
+    function tableCreateWithJsonFlat(json) {
+        
+        let tbl = document.createElement('table');
+        tbl.style.width = '100px';
+        tbl.style.border = '1px solid black';
+
+       if(json!==null){
+            for (let [key1, data] of Object.entries(json)) {
+                console.log(`${key1}: ${data}`);
+                let tr = tbl.insertRow();
+                if(data !== null){
+                    for (let [key2, cell] of Object.entries(data)) {
+                        console.log(`${key2}: ${cell}`);
+                        let td = tr.insertCell();
+                        if(typeof(cell) === 'string'){
+                            td.appendChild(document.createTextNode(`value${cell}`));
+                        }else if (typeof(cell) === 'object'){
+                            td.appendChild(tableCreateWithJsonFlat(cell));
+                        }
+                        
+                        td.style.border = '1px solid black';
+                    }
+                }
+            }
+       }
+        // json.forEach((value,idxRow,rows)=>{
+        //     let tr = tbl.insertRow();
+        //     rows.forEach((value,idxCell,cells)=>{
+        //         let td = tr.insertCell();
+        //         if(typeof(value) === 'string'){
+        //             td.appendChild(document.createTextNode(`idxRow${idxRow}/idxCell${idxCell}/value${value}`));
+        //         }else if (typeof(value) === 'object'){
+        //             td.appendChild(tableCreateWithJsonFlat(value));
+        //         }
+                
+        //         td.style.border = '1px solid black';
+        //     })
+        // })
+
+        return tbl;
+    }
+    
+</script>
+</html>
